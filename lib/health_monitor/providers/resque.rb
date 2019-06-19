@@ -5,14 +5,39 @@ require 'resque'
 
 module HealthMonitor
   module Providers
-    class ResqueException < StandardError; end
 
     class Resque < Base
-      def check!
-        ::Resque.info
-      rescue Exception => e
-        raise ResqueException.new(e.message)
+
+      STATUSES = {
+        ok: 'OK',
+        error: 'ERROR'
+      }.freeze
+
+      def initialize
+        @result = {}
       end
+
+      def resque_check!
+        status(STATUSES[:ok])
+        @result.merge!(Resque.info)
+      rescue StandardError => e
+        status(STATUSES[:error])
+        message(e.message)
+      end
+
+      def status(arg)
+        @result.store('status', arg)
+      end
+
+      def message(msg)
+        @result.store('message', msg)
+      end
+
+      def check!
+        resque_check!
+        @result
+      end
+
     end
   end
 end

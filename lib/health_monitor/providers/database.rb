@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 require 'health_monitor/providers/base'
+require 'active_support/core_ext/hash'
+require 'json'
+require 'mysql'
 
 module HealthMonitor
   module Providers
-    class DatabaseException < StandardError; end
 
     class Database < Base
-      def check!
-        # Check connection to the DB:
-        ActiveRecord::Migrator.current_version
-      rescue Exception => e
-        raise DatabaseException.new(e.message)
-      end
+
     end
   end
 end

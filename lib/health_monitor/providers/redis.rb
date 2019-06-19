@@ -1,19 +1,22 @@
 # frozen_string_literal: true
 
 require 'health_monitor/providers/base'
+require 'redis'
+require 'json'
 
 module HealthMonitor
   module Providers
-    class RedisException < StandardError; end
 
     class Redis < Base
       class Configuration
-        DEFAULT_URL = nil
+        DEFAULT_HOST = '127.0.0.1'
+        DEFAULT_PORT = '6379'
 
-        attr_accessor :url, :connection, :max_used_memory
+        attr_accessor :host, :port, :connection
 
         def initialize
-          @url = DEFAULT_URL
+          @host = DEFAULT_HOST
+          @port = DEFAULT_PORT
         end
       end
 
@@ -25,55 +28,76 @@ module HealthMonitor
         end
       end
 
-      def check!
-        check_values!
-        check_max_used_memory!
-      rescue Exception => e
-        raise RedisException.new(e.message)
-      ensure
-        redis.close
-      end
+      STAT = %w[
+        tcp_port
+        uptime_in_seconds
+        connected_clients
+        blocked_clients
+        used_memory
+        total_system_memory
+        instantaneous_input_kbps
+        instantaneous_output_kbps
+        rdb_changes_since_last_save
+        total_conncetions_recieved
+        total_commands_processed
+        rejected_connections
+      ].freeze
 
-      private
-
-      def check_values!
-        time = Time.now.to_s(:rfc2822)
-
-        redis.set(key, time)
-        fetched = redis.get(key)
-
-        raise "different values (now: #{time}, fetched: #{fetched})" if fetched != time
-      end
-
-      def check_max_used_memory!
-        return unless configuration.max_used_memory
-        return if used_memory_mb <= configuration.max_used_memory
-
-        raise "#{used_memory_mb}Mb memory using is higher than #{configuration.max_used_memory}Mb maximum expected"
-      end
-
-      def key
-        @key ||= ['health', request.try(:remote_ip)].join(':')
-      end
+      STATUSES = {
+        ok: 'OK',
+        error: 'ERROR'
+      }.freeze
 
       def redis
-        @redis =
-          if configuration.connection
-            configuration.connection
-          elsif configuration.url
-            ::Redis.new(url: configuration.url)
+        @redis = configuration.connection || ::Redis.new(host: configuration.host, port: configuration.port)
+      end
+
+      def redis_check
+        redis
+        if check_keys.nil?
+          if initial_test?
+            STATUSES[:ok]
           else
-            ::Redis.new
+            STATUSES[:error]
           end
+        else
+          STATUSES[:ok]
+        end
+      rescue StandardError
+        STATUSES[:error]
       end
 
-      def bytes_to_megabytes(bytes)
-        (bytes.to_f / 1024 / 1024).round
+      def initial_test?
+        @redis.setex('test', 5, 'testString')
+        @redis.get('test').equal?('testString')
       end
 
-      def used_memory_mb
-        bytes_to_megabytes(redis.info['used_memory'])
+      def check_keys
+        @redis.keys.count
       end
+
+      def fetch_info
+        @redis.info
+      end
+
+      def check!
+        @result = {}
+        @result.store('status', redis_check)
+        fetch_stats(fetch_info)
+      rescue StandardError => e
+        @result.store('message', e.message)
+      ensure
+        @result.store('keys', check_keys) unless check_keys.nil?
+        @redis.close
+        return @result
+      end
+
+      def fetch_stats(info)
+        STAT.each do |stat|
+          @result[stat] = info[stat]
+        end
+      end
+
     end
   end
 end
