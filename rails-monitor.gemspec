@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'health_monitor/version'
 
 Gem::Specification.new do |s|
-  s.name = 'health-monitor-rails'
+  s.name = 'rails-monitor'
   s.version = HealthMonitor::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ['Leonid Beder']
