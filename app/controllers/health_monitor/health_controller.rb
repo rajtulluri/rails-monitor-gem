@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'json'
 
 module HealthMonitor
   class HealthController < ActionController::Base

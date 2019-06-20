@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.homepage = 'https://github.com/lbeder/health-monitor-rails'
   s.summary = 'Health monitoring Rails plug-in, which checks various services (db, cache, '\
-    'sidekiq, redis, etc.)'
+    'redis, etc.)'
   s.description = 'Health monitoring Rails plug-in, which checks various services (db, cache, '\
-    'sidekiq, redis, etc.).'
+    'redis, etc.).'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
@@ -37,4 +37,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'spork'
   s.add_development_dependency 'sqlite3', '~> 1.3.6'
   s.add_development_dependency 'timecop'
+  s.add_development_dependency 'json'
+  s.add_development_dependency 'redis'
+
 end
