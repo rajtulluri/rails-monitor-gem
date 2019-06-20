@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.name = 'rails-monitor'
   s.version = HealthMonitor::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ['Leonid Beder']
-  s.email = ['leonid.beder@gmail.com']
+  s.authors = ['Shreyash Maini', 'Raj Tulluri']
+  s.email = ['shreyashm20@gmail.com', 'mail@rajtulluri.com']
   s.license = 'MIT'
-  s.homepage = 'https://github.com/lbeder/health-monitor-rails'
+  s.homepage = 'https://github.com/rajtulluri/rails-monitor-gem'
   s.summary = 'Health monitoring Rails plug-in, which checks various services (db, cache, '\
     'redis, etc.)'
   s.description = 'Health monitoring Rails plug-in, which checks various services (db, cache, '\
