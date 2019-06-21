@@ -2,8 +2,6 @@
 
 require 'health_monitor/providers/base'
 require 'active_support/core_ext/hash'
-require 'json'
-require 'mysql'
 
 module HealthMonitor
   module Providers
@@ -19,19 +17,20 @@ module HealthMonitor
         @environment = ENV['RACK_ENV'] || 'development'
         @dbconfig = YAML.load(File.read('config/database.yml'))
         ActiveRecord::Base.establish_connection @dbconfig[@environment]
-        ActiveRecord::Base.connection.current_database
+        #ActiveRecord::Base.connection.current_database
       end
 
       def check!
+        result = {}
         connect
-        @result.store('status', STATUSES[:ok])
+        result.store('status', STATUSES[:ok])
       rescue StandardError => e
-        @result.store('status', STATUSES[:error])
-        @result.store('message', e.message)
-
+        result.store('status', STATUSES[:error])
+        result.store('message', e.message)
       ensure
         ActiveRecord::Base.remove_connection
-        return @result
+        result.store('name', 'Database')
+        return result
       end
 
     end

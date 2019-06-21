@@ -2,7 +2,7 @@
 
 module HealthMonitor
   class Configuration
-    PROVIDERS = %i[cache database rail_gun redis resque sql].freeze
+    PROVIDERS = %i[cache database rail_gun redis resque sql sidekiq].freeze
 
     attr_accessor :error_callback, :basic_auth_credentials, :environment_variables
     attr_reader :providers

@@ -17,10 +17,10 @@ module HealthMonitor
       respond_to do |format|
         format.html
         format.json do
-          render json: statuses.to_json, status: statuses[:status]
+          render json: statuses.to_json
         end
         format.xml do
-          render xml: statuses.to_xml, status: statuses[:status]
+          render xml: statuses.to_xml
         end
       end
     end

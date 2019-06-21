@@ -2,13 +2,16 @@
 
 require 'health_monitor/providers/base'
 require 'active_support/core_ext/hash'
-require 'json'
-require 'mysql'
+
 
 module HealthMonitor
   module Providers
 
     class Database < Base
+
+      def check!
+        return
+      end
 
     end
   end

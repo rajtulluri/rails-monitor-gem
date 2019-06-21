@@ -13,22 +13,11 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
-      def initialize
-        @result = {}
-      end
-
-      def cache_check!
-        test = Benchmark.bm do |x|
-          x.report('Caching: '){
-            100.times { cache_io }
-          }
-        end
-        JSON.generate(test)
-      end
-
       def cache_io
-        Rails.cache.write(key, time)
-        if Rails.cache.read(key).equal?(time)
+        start_time = time
+        Rails.cache.write(key, start_time)
+        if Rails.cache.read(key).equal?(start_time)
+          @result.store('latency', time - start_time)
           STATUSES[:ok]
         else
           raise StandardError
@@ -43,11 +32,13 @@ module HealthMonitor
       end
 
       def time
-        Time.now.to_s
+        Time.now
       end
 
       def check!
-        @result.store('status', cache_check!)
+        @result = {}
+        @result.store('status', cache_io)
+        @result.store('name','Cache')
         @result
       end
     end

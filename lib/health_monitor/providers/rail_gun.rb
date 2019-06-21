@@ -2,47 +2,66 @@
 
 require 'health_monitor/providers/base'
 require 'net/http'
-require 'json'
 
 module HealthMonitor
   module Providers
 
     class RailGun < Base
+      class Configuration
+        DEFAULT_URL='http://localhost:3000'
+
+        attr_accessor :url
+
+        def initialize
+          @url = DEFAULT_URL
+        end
+      end
+
+      class << self
+        private
+
+        def configuration_class
+          ::HealthMonitor::Providers::RailGun::Configuration
+        end
+      end
 
       STATUSES = {
         ok: 'OK',
         error: 'ERROR'
       }.freeze
 
-      DEFAULT_URL = 'http://localhost:3000'.freeze
-
-      def initialize(req_url = nil)
-        @count=0
+      def vars
+        @ctr=0
         @avg=0
         @rescode={}
-        @result={}
-        @url = req_url || DEFAULT_URL
+        @result = {}
       end
 
       def check!
-        cal_lat()
-        cal_codes()
-        show_count()
+        vars
+        cal_lat
+        cal_codes
+        show_count
         @result.store('status', STATUSES[:ok])
       rescue StandardError => e
         @result.store('status', STATUSES[:error])
         @result.store('message', e.message)
       ensure
+        @result.store('name', 'Rails app')
         return @result
       end
 
+      def connection
+        configuration.url || 'http://localhost:3000'
+      end
+
       def cal_lat
-        @count+=1
-        @start = Time.now
-        uri = URI(@url)
+        @ctr += 1
+        start = Time.now
+        uri = URI(connection)
         @res = Net::HTTP.get_response(uri)
-        @latency = Time.now - @start
-        @avg+=@latency
+        @latency = Time.now - start
+        @avg += @latency
       end
 
       def cal_codes
@@ -62,10 +81,10 @@ module HealthMonitor
       end
 
       def show_count
-        ratecall()
+        ratecall
         totdur = @avg
-        @avg/=@count
-        @result.store('Count', @count)
+        @avg /= @ctr
+        @result.store('Count', @ctr)
         @result.store('Total Duration', totdur)
         @result.store('Average Latency', @avg)
       end

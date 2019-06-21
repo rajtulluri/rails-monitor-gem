@@ -2,7 +2,6 @@
 
 require 'health_monitor/providers/base'
 require 'redis'
-require 'json'
 
 module HealthMonitor
   module Providers
@@ -48,12 +47,18 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
-      def redis
-        @redis = configuration.connection || ::Redis.new(host: configuration.host, port: configuration.port)
+      def redis_connection
+        @redis = if configuration.connection
+                   configuration.connection
+                 elsif configuration.host && configuration.port
+                   ::Redis.new(host: configuration.host, port: configuration.port)
+                 else
+                   ::Redis.new
+                 end
       end
 
       def redis_check
-        redis
+        redis_connection
         if check_keys.nil?
           if initial_test?
             STATUSES[:ok]
@@ -88,6 +93,7 @@ module HealthMonitor
         @result.store('message', e.message)
       ensure
         @result.store('keys', check_keys) unless check_keys.nil?
+        @result.store('name', 'Redis')
         @redis.close
         return @result
       end

@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'health_monitor/version'
 
 Gem::Specification.new do |s|
-  s.name = 'rails-monitor'
+  s.name = 'health-monitor-rails'
   s.version = HealthMonitor::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ['Shreyash Maini', 'Raj Tulluri']
@@ -39,5 +39,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'json'
   s.add_development_dependency 'redis'
+  s.add_development_dependency 'byebug'
 
 end
