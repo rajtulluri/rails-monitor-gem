@@ -13,7 +13,7 @@ module HealthMonitor
 
     def check
       @statuses = statuses
-
+      puts "controller"
       respond_to do |format|
         format.html
         format.json do
