@@ -17,7 +17,6 @@ module HealthMonitor
         @environment = ENV['RACK_ENV'] || 'development'
         @dbconfig = YAML.load(File.read('config/database.yml'))
         ActiveRecord::Base.establish_connection @dbconfig[@environment]
-        #ActiveRecord::Base.connection.current_database
       end
 
       def check!
@@ -28,7 +27,6 @@ module HealthMonitor
         result.store('status', STATUSES[:error])
         result.store('message', e.message)
       ensure
-        ActiveRecord::Base.remove_connection
         result.store('name', 'Database')
         return result
       end
