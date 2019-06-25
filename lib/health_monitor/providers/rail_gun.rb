@@ -31,10 +31,10 @@ module HealthMonitor
       }.freeze
 
       def vars
-        @ctr = 0 if @ctr.nil?
-        @avg = 0 if @avg.nil?
-        puts "#{@ctr} ---- #{@avg}"
-        @rescode={}
+        $ctr = 0 if $ctr.nil?
+        $totdur = 0 if $totdur.nil?
+        puts "#{$ctr} ---- #{$totdur}"
+        $rescode||={}
         @result = {}
       end
 
@@ -57,21 +57,21 @@ module HealthMonitor
       end
 
       def cal_lat
-        @ctr += 1
+        $ctr += 1
         start = Time.now
         uri = URI(connection)
         @res = Net::HTTP.get_response(uri)
         @latency = Time.now - start
-        @avg += @latency
+        $totdur += @latency
       end
 
       def cal_codes
-        if @rescode.key?(@res.code)
-          @rescode[@res.code]+=1
+        if $rescode.key?(@res.code)
+          $rescode[@res.code]+=1
         else
-          @rescode.store(@res.code,1)
+          $rescode.store(@res.code,1)
         end
-        @result.store('Status Codes', @rescode)
+        @result.store('Status Codes', $rescode)
       end
 
       def ratecall
@@ -83,11 +83,10 @@ module HealthMonitor
 
       def show_count
         ratecall
-        totdur = @avg
-        @avg /= @ctr
-        @result.store('Count', @ctr)
-        @result.store('Total Duration', totdur)
-        @result.store('Average Latency', @avg)
+        avg = $totdur/$ctr
+        @result.store('Count', $ctr)
+        @result.store('Total Duration', $totdur)
+        @result.store('Average Latency', avg)
       end
 
     end
