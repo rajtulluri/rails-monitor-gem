@@ -31,8 +31,9 @@ module HealthMonitor
       }.freeze
 
       def vars
-        @ctr=0
-        @avg=0
+        @ctr = 0 if @ctr.nil?
+        @avg = 0 if @avg.nil?
+        puts "#{@ctr} ---- #{@avg}"
         @rescode={}
         @result = {}
       end

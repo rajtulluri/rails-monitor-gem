@@ -15,13 +15,11 @@ module HealthMonitor
 
   def check(request: nil, params: {})
     providers = configuration.providers
-    puts providers
     if params[:providers].present?
       providers = providers.select { |provider| params[:providers].include?(provider.provider_name.downcase) }
     end
 
     results = providers.map { |provider| provider_result(provider, request) }
-    puts "monitor"
     {
       results: results,
       timestamp: Time.now.to_s(:rfc2822)
