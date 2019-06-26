@@ -12,7 +12,7 @@ module HealthMonitor
 
       def self.configure
         return unless configurable?
-
+        @global_configuration ||= []
         @global_configuration = configuration_class.new
 
         yield @global_configuration if block_given?

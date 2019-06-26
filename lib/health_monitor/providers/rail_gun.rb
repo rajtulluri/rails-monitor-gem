@@ -8,12 +8,13 @@ module HealthMonitor
 
     class RailGun < Base
       class Configuration
-        DEFAULT_URL='http://localhost:3000'
 
+
+        #if url.nil?
         attr_accessor :url
 
         def initialize
-          @url = DEFAULT_URL
+          @url = []
         end
       end
 
@@ -30,48 +31,45 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
+      DEFAULT_URL='http://localhost:3000'
+
       def vars
         $ctr = 0 if $ctr.nil?
         $totdur = 0 if $totdur.nil?
         puts "#{$ctr} ---- #{$totdur}"
-        $rescode||={}
         @result = {}
       end
 
       def check!
-        vars
-        cal_lat
-        cal_codes
-        show_count
-        @result.store('status', STATUSES[:ok])
+        @output = Hash.new{|hsh,key| hsh[key] = {} }
+        configuration.url.each do |url|
+          vars
+          cal_lat(url)
+          show_count
       rescue StandardError => e
         @result.store('status', STATUSES[:error])
         @result.store('message', e.message)
       ensure
         @result.store('name', 'Rails app')
-        return @result
+        @output.store(url, @result)
+        end
+        return @output
       end
 
-      def connection
-        configuration.url || 'http://localhost:3000'
-      end
-
-      def cal_lat
+      def cal_lat(connection = DEFAULT_URL)
         $ctr += 1
         start = Time.now
-        uri = URI(connection)
-        @res = Net::HTTP.get_response(uri)
+        @uri = URI(connection)
+        @res = Net::HTTP.get_response(@uri)
         @latency = Time.now - start
         $totdur += @latency
-      end
-
-      def cal_codes
-        if $rescode.key?(@res.code)
-          $rescode[@res.code]+=1
+        @result.store('Status Codes', @res.code)
+        if @res.code != "200"
+          @result.store('status', STATUSES[:error])
+          @result.store('message', @res.message)
         else
-          $rescode.store(@res.code,1)
+          @result.store('status', STATUSES[:ok])
         end
-        @result.store('Status Codes', $rescode)
       end
 
       def ratecall
