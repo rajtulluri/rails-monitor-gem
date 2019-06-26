@@ -8,14 +8,11 @@ module HealthMonitor
 
     class Redis < Base
       class Configuration
-        DEFAULT_HOST = '127.0.0.1'
-        DEFAULT_PORT = '6379'
 
-        attr_accessor :host, :port, :connection
+        attr_accessor :connection
 
         def initialize
-          @host = DEFAULT_HOST
-          @port = DEFAULT_PORT
+          @connection = []
         end
       end
 
@@ -26,6 +23,9 @@ module HealthMonitor
           ::HealthMonitor::Providers::Redis::Configuration
         end
       end
+
+      DEFAULT_HOST = 'localhost'
+      DEFAULT_PORT = '6379'
 
       STAT = %w[
         tcp_port
@@ -47,18 +47,17 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
-      def redis_connection
-        @redis = if configuration.connection
-                   configuration.connection
-                 elsif configuration.host && configuration.port
-                   ::Redis.new(host: configuration.host, port: configuration.port)
-                 else
-                   ::Redis.new
-                 end
+      def parse_url(instance)
+        instance.split(':')
+      end
+
+      def redis_connection(host = DEFAULT_HOST, port = DEFAULT_PORT)
+        @redis = ::Redis.new(host: host, port: port)
+      rescue CannotConnectError => e
+        @result.store('message', e.message)
       end
 
       def redis_check
-        redis_connection
         if check_keys.nil?
           if initial_test?
             STATUSES[:ok]
@@ -85,17 +84,26 @@ module HealthMonitor
         @redis.info
       end
 
+      def connect(instance)
+        connection = parse_url(instance)
+        redis_connection(connection[0], connection[1])
+      end
+
       def check!
-        @result = {}
-        @result.store('status', redis_check)
-        fetch_stats(fetch_info)
-      rescue StandardError => e
-        @result.store('message', e.message)
-      ensure
-        @result.store('keys', check_keys) unless check_keys.nil?
-        @result.store('name', 'Redis')
-        @redis.close
-        return @result
+        final_result = {}
+        configuration.connection.each do |instance|
+          @result = {}
+          connect(instance)
+          @result.store('status', redis_check)
+          @result.store('keys', check_keys) unless check_keys.nil?
+          fetch_stats(fetch_info)
+        rescue StandardError => e
+          @result.store('message', e.message)
+        ensure
+          final_result.store("Redis: #{instance}", @result)
+          @redis.close
+        end
+        final_result
       end
 
       def fetch_stats(info)
