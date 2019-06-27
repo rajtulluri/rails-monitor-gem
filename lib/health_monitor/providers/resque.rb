@@ -13,9 +13,6 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
-      def initialize
-        @result = {}
-      end
 
       def resque_check!
         status(STATUSES[:ok])
@@ -34,7 +31,7 @@ module HealthMonitor
       end
 
       def check!
-        final_result = {}
+        final_result = @result = {}
         resque_check!
         final_result.store('Resque', @result)
         return final_result

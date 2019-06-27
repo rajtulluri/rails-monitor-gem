@@ -13,9 +13,6 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
-      def initialize
-        @result = {}
-      end
 
       def cache_io
         start_time = time
@@ -40,7 +37,7 @@ module HealthMonitor
       end
 
       def check!
-        final_result = {}
+        final_result = @result = {}
         @result.store('status', cache_io)
         final_result.store('Cache', @result)
         return final_result
