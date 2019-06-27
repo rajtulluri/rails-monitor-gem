@@ -37,10 +37,9 @@ module HealthMonitor
       end
 
       def check!
-        final_result = @result = {}
+        @result = {}
         @result.store('status', cache_io)
-        final_result.store('Cache', @result)
-        return final_result
+        final_result = { 'Cache' => @result }
       end
     end
   end

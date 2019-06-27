@@ -31,10 +31,9 @@ module HealthMonitor
       end
 
       def check!
-        final_result = @result = {}
+        @result = {}
         resque_check!
-        final_result.store('Resque', @result)
-        return final_result
+        final_result = { 'Resque' => @result }
       end
 
     end

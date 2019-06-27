@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c53b3aed-003d-4df4-92c4-c21d54d96080" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/health-monitor-rails-1.0.1.gem" beforeDir="false" afterPath="$PROJECT_DIR$/health-monitor-rails-1.0.1.gem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/health_monitor/providers/cache.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/health_monitor/providers/cache.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/health_monitor/providers/resque.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/health_monitor/providers/resque.rb" afterDir="false" />
     </list>
@@ -51,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/cache.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
+            <state relative-caret-position="218">
+              <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -66,38 +67,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/health_monitor/health/check.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="49" column="19" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/health_monitor/version.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/resque.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="39" column="15" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+            <state relative-caret-position="173">
+              <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/sql.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="323">
+              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -399,12 +382,12 @@
       <workItem from="1561007462629" duration="45152000" />
       <workItem from="1561456854088" duration="66000" />
       <workItem from="1561524953891" duration="13569000" />
-      <workItem from="1561612769497" duration="5746000" />
+      <workItem from="1561612769497" duration="6194000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83702000" />
+    <option name="totallyTimeSpent" value="84150000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -714,13 +697,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/cache.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/rail_gun.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-187">
@@ -738,17 +714,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/resque.rb">
+    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/sql.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="39" column="15" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+        <state relative-caret-position="323">
+          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/sql.rb">
+    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/cache.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="218">
+          <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/health_monitor/providers/resque.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
         </state>
       </provider>
     </entry>
