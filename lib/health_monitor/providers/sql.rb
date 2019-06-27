@@ -27,8 +27,8 @@ module HealthMonitor
         result.store('status', STATUSES[:error])
         result.store('message', e.message)
       ensure
-        result.store('name', 'Database')
-        return result
+        final_result = { 'Database' => result }
+        return final_result
       end
 
     end

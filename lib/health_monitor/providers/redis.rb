@@ -100,7 +100,7 @@ module HealthMonitor
         rescue StandardError => e
           @result.store('message', e.message)
         ensure
-          final_result.store("Redis: #{instance}", @result)
+          final_result.store("Redis:#{instance}", @result)
           @redis.close
         end
         final_result

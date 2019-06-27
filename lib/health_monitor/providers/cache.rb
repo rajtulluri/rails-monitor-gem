@@ -13,6 +13,10 @@ module HealthMonitor
         error: 'ERROR'
       }.freeze
 
+      def initialize
+        @result = {}
+      end
+
       def cache_io
         start_time = time
         Rails.cache.write(key, start_time)
@@ -36,10 +40,10 @@ module HealthMonitor
       end
 
       def check!
-        @result = {}
+        final_result = {}
         @result.store('status', cache_io)
-        @result.store('name','Cache')
-        @result
+        final_result.store('Cache', @result)
+        final_result
       end
     end
   end
