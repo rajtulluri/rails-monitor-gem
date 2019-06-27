@@ -43,7 +43,7 @@ module HealthMonitor
         final_result = {}
         @result.store('status', cache_io)
         final_result.store('Cache', @result)
-        final_result
+        return final_result
       end
     end
   end

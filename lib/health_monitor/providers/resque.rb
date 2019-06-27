@@ -37,7 +37,7 @@ module HealthMonitor
         final_result = {}
         resque_check!
         final_result.store('Resque', @result)
-        final_result
+        return final_result
       end
 
     end
