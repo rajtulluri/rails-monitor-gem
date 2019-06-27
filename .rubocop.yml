@@ -1,0 +1,55 @@
+# Custom config for RuboCop static code analysis
+Metrics/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - 'spec/**/*'
+
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+Style/RaiseArgs:
+  Enabled: false
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/AlignHash:
+  Enabled: false
+
+Layout/AlignArray:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/IndentFirstHashElement:
+  EnforcedStyle: consistent
+
+Style/Documentation:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/ModuleFunction:
+  Enabled: false
+
+Lint/RescueException:
+  Exclude:
+    - 'lib/health_monitor/providers/**/*'

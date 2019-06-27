@@ -1,0 +1,7 @@
+Gemfile.lock
+pkg
+tmp
+coverage
+spec/dummy/log
+gemfiles/*gemfile.lock
+health-monitor-rails-1.0.0.gem
